@@ -1,35 +1,7 @@
-<p align="center">
-  <img src="public/banner.png" alt="Diary Desk Banner" width="600" />
-</p>
-
-<div align="center">
-
-# ✏️ Diary Desk
-
-**Capture. Organize. Reflect.**
-
+# Diary Desk
 A minimal, personal note-taking web application inspired by the simplicity of Notion — built with React and Firebase.
 
-[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
-[![Firebase](https://img.shields.io/badge/Firebase-v12-FFCA28?logo=firebase&logoColor=white)](https://firebase.google.com/)
-[![React Router](https://img.shields.io/badge/React_Router-v7-CA4245?logo=reactrouter&logoColor=white)](https://reactrouter.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
 </div>
-
----
-
-## 📖 Table of Contents
-
-- [Overview](#-overview)
-- [Features In-Depth](#-features-in-depth)
-- [Tech Stack & Architecture](#-tech-stack--architecture)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Environment Variables](#-environment-variables)
-- [Screenshots](#-screenshots)
-- [What I Learned](#-what-i-learned)
-- [License](#-license)
 
 ---
 
@@ -92,80 +64,6 @@ A premium, distraction-free interface:
 
 ---
 
-## 🛠️ Tech Stack & Architecture
-
-| Layer | Technology | Why I Chose It |
-|---|---|---|
-| **UI Library** | React 19 | Component-based architecture, hooks for state management, fast virtual DOM |
-| **Routing** | React Router v7 | Declarative client-side routing with protected routes and navigation |
-| **State Management** | React Context API | Global state for notes without the complexity of Redux — used a custom `NoteState` provider |
-| **Authentication** | Firebase Auth | Secure, production-ready auth with email/password and Google OAuth out of the box |
-| **Database** | Cloud Firestore | Real-time NoSQL document database with per-user security rules |
-| **Styling** | Custom CSS | Full control over the design system using CSS custom properties, no framework dependency |
-| **Build Tool** | Create React App | Zero-config React setup with hot reloading, environment variable support (`REACT_APP_*`) |
-| **Deployment** | Firebase Hosting *(optional)* | Seamless deployment pipeline with the Firebase CLI |
-
-### Architecture Diagram
-
-```
-┌─────────────────────────────────────────────────────┐
-│                    React Frontend                    │
-│  ┌──────────┐  ┌──────────┐  ┌───────────────────┐  │
-│  │  Navbar   │  │ Sidebar  │  │   Notes Panel     │  │
-│  │ DarkMode  │  │ Tag Nav  │  │ Search + Grid +   │  │
-│  │  Toggle   │  │          │  │   Detail View     │  │
-│  └──────────┘  └──────────┘  └───────────────────┘  │
-│            ↕ React Context (NoteState) ↕             │
-├─────────────────────────────────────────────────────┤
-│                  Firebase SDK (v12)                   │
-│  ┌──────────────────┐  ┌──────────────────────────┐  │
-│  │  Firebase Auth    │  │   Cloud Firestore        │  │
-│  │  • Email/Password │  │   • notes collection     │  │
-│  │  • Google OAuth   │  │   • users collection     │  │
-│  └──────────────────┘  └──────────────────────────┘  │
-└─────────────────────────────────────────────────────┘
-```
-
----
-
-## 📁 Project Structure
-
-```
-Diary-Desk-Firebase/
-├── public/                     # Static assets
-│   ├── index.html              # HTML template with meta tags
-│   ├── favicon.ico             # App favicon
-│   └── manifest.json           # PWA manifest
-├── src/
-│   ├── components/
-│   │   ├── Navbar.js           # Top navigation bar with logout & theme toggle
-│   │   ├── Sidebar.js          # Tag-based sidebar navigation
-│   │   ├── Notes.js            # Main notes panel with search & grid
-│   │   ├── Noteitem.js         # Individual note card component
-│   │   ├── NoteDetail.js       # Full note detail reading pane
-│   │   ├── AddNote.js          # Note creation overlay modal
-│   │   ├── Login.js            # Login page (Email + Google)
-│   │   ├── Signup.js           # Registration with strength meter
-│   │   ├── DarkModeToggle.js   # Theme switcher with SVG icons
-│   │   ├── Alert.js            # Toast-style alert notifications
-│   │   ├── About.js            # About page with feature grid
-│   │   └── Home.js             # Home wrapper component
-│   ├── context/
-│   │   └── notes/
-│   │       ├── noteContext.js   # React Context definition
-│   │       └── NoteState.js     # Context provider with Firestore CRUD
-│   ├── firebase.js              # Firebase config (uses env variables)
-│   ├── App.js                   # Root component with routing & auth listener
-│   ├── App.css                  # Main stylesheet & design system
-│   └── index.js                 # React DOM entry point
-├── .env                         # Environment variables (git-ignored)
-├── .env.example                 # Template for environment variables
-├── .gitignore                   # Git ignore rules
-└── package.json                 # Dependencies and scripts
-```
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -221,7 +119,10 @@ Create a `.env` file in the project root with the following variables (see `.env
 
 ## 📸 Screenshots
 
-*(Add your screenshots here)*
+<img width="1919" height="879" alt="Screenshot 2026-03-24 195243" src="https://github.com/user-attachments/assets/6d6ce119-729e-47ef-930b-ce93a7af38ba" />
+<img width="1919" height="882" alt="Screenshot 2026-03-24 195658" src="https://github.com/user-attachments/assets/77751623-d39a-4257-a965-0260c0a1a823" />
+<img width="1919" height="887" alt="Screenshot 2026-03-24 195706" src="https://github.com/user-attachments/assets/ea28e218-dacc-47f5-aa1e-9a15ac7d0260" />
+
 
 ---
 
