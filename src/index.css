@@ -1,0 +1,226 @@
+/* CSS Reset and Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Light theme — Notion-inspired neutral palette */
+  --color-background: #FAFAFA;
+  --color-surface: #FFFFFF;
+  --color-border: #E8E8E8;
+  --color-text: #0F0F0F;
+  --color-text-secondary: #6B6B6B;
+  --color-text-muted: #ABABAB;
+  --color-white: #FFFFFF;
+
+  /* Primary action — dark */
+  --color-primary: #0F0F0F;
+  --color-primary-dark: #2A2A2A;
+  --color-primary-light: #F5F5F5;
+  --color-primary-text: #FFFFFF;
+
+  /* Sidebar */
+  --color-sidebar: #F5F5F5;
+
+  /* Status colors (muted for alerts) */
+  --color-success: #16A34A;
+  --color-warning: #D97706;
+  --color-error: #E11D48;
+  --color-info: #2563EB;
+
+  /* Tag colors — sharp accent system */
+  --tag-personal-bg: #EDE9FE;
+  --tag-personal-text: #5B21B6;
+  --tag-personal-dot: #7C3AED;
+
+  --tag-work-bg: #DBEAFE;
+  --tag-work-text: #1E40AF;
+  --tag-work-dot: #2563EB;
+
+  --tag-ideas-bg: #DCFCE7;
+  --tag-ideas-text: #166534;
+  --tag-ideas-dot: #16A34A;
+
+  --tag-journal-bg: #FEF3C7;
+  --tag-journal-text: #92400E;
+  --tag-journal-dot: #D97706;
+
+  --tag-health-bg: #FFE4E6;
+  --tag-health-text: #9F1239;
+  --tag-health-dot: #E11D48;
+
+  /* Default tag (General / unknown) */
+  --tag-default-bg: #F3F4F6;
+  --tag-default-text: #4B5563;
+  --tag-default-dot: #6B7280;
+
+  /* Typography */
+  --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Lora', Georgia, serif;
+
+  --text-xs: 0.6875rem;   /* 11px */
+  --text-sm: 0.75rem;     /* 12px */
+  --text-base: 0.875rem;  /* 14px */
+  --text-md: 0.9375rem;   /* 15px */
+  --text-lg: 1.0625rem;   /* 17px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+  --spacing-3xl: 48px;
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --color-background: #0F0F0F;
+  --color-surface: #1A1A1A;
+  --color-border: #2A2A2A;
+  --color-text: #F0F0F0;
+  --color-text-secondary: #8A8A8A;
+  --color-text-muted: #555555;
+  --color-sidebar: #141414;
+  --color-primary: #F0F0F0;
+  --color-primary-dark: #D0D0D0;
+  --color-primary-light: #1A1A1A;
+  --color-primary-text: #0F0F0F;
+
+  /* Tag accents stay vivid in dark mode */
+}
+
+.dark-mode {
+  --color-background: #0F0F0F;
+  --color-surface: #1A1A1A;
+  --color-border: #2A2A2A;
+  --color-text: #F0F0F0;
+  --color-text-secondary: #8A8A8A;
+  --color-text-muted: #555555;
+  --color-sidebar: #141414;
+  --color-primary: #F0F0F0;
+  --color-primary-dark: #D0D0D0;
+  --color-primary-light: #1A1A1A;
+  --color-primary-text: #0F0F0F;
+}
+
+/* Base */
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* Global resets */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Focus */
+*:focus-visible {
+  outline: 1.5px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--tag-work-bg);
+  color: var(--tag-work-text);
+}
+
+/* Animations — minimal, no bouncy transforms */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner-border {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
