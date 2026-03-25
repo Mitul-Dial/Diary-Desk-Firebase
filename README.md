@@ -1,7 +1,11 @@
-# Diary Desk
+<div align="center">
+<h1><b>Diary Desk<b></h1>
+   <h2><b>https://diary-desk.web.app<b></h2>
+</div>
+   
 A minimal, personal note-taking web application inspired by the simplicity of Notion — built with React and Firebase.
 
-</div>
+
 
 ---
 
