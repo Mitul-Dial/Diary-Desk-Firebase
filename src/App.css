@@ -2,6 +2,8 @@
 
 .App {
   height: 100vh;
+  height: 100dvh;
+  /* dynamic viewport height — fixes mobile browser chrome issues */
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -12,18 +14,22 @@
   display: flex;
   flex: 1;
   overflow: hidden;
+  min-width: 0;
 }
 
 /* Panel 1 — Sidebar */
 .sidebar {
-  width: 220px;
-  min-width: 220px;
+  width: clamp(180px, 18vw, 240px);
+  /* fluid between 180–240px */
+  min-width: 180px;
   background-color: var(--color-sidebar);
   border-right: 0.5px solid var(--color-border);
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
 }
 
 .sidebar-header {
@@ -56,6 +62,9 @@
   font-weight: 500;
   color: var(--color-text);
   letter-spacing: -0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sidebar-nav {
@@ -87,6 +96,8 @@
   text-align: left;
   border: none;
   background: none;
+  min-height: 36px;
+  /* consistent touch target */
 }
 
 .sidebar-item:hover {
@@ -117,6 +128,7 @@
   padding: 1px 6px;
   border-radius: 10px;
   font-weight: 400;
+  flex-shrink: 0;
 }
 
 .sidebar-tag-dot {
@@ -146,6 +158,8 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color var(--transition-fast);
+  min-height: 40px;
+  /* solid touch target */
 }
 
 .sidebar-new-btn:hover {
@@ -160,6 +174,7 @@
   overflow-y: auto;
   background: var(--color-background);
   min-width: 0;
+  /* allows flex child to shrink below content size */
 }
 
 .notes-panel-header {
@@ -169,6 +184,9 @@
   flex-direction: column;
   gap: var(--spacing-md);
   background: var(--color-surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .notes-search {
@@ -180,6 +198,9 @@
   font-size: var(--text-base);
   color: var(--color-text);
   transition: border-color var(--transition-fast);
+  box-sizing: border-box;
+  min-height: 40px;
+  /* touch-friendly */
 }
 
 .notes-search:focus {
@@ -203,23 +224,17 @@
   font-weight: 400;
 }
 
-.notes-grid {
-  padding: var(--spacing-lg) var(--spacing-xl);
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  align-content: start;
-}
-
 /* Panel 3 — Detail Panel */
 .detail-panel {
-  width: 340px;
-  min-width: 340px;
+  width: clamp(280px, 28vw, 380px);
+  /* fluid between 280–380px */
+  min-width: 280px;
   border-left: 0.5px solid var(--color-border);
   background: var(--color-surface);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .detail-empty {
@@ -253,6 +268,8 @@
   color: var(--color-text);
   white-space: pre-wrap;
   word-break: break-word;
+  overflow-wrap: break-word;
+  /* extra safety for long unbroken strings */
 }
 
 .detail-footer {
@@ -268,6 +285,7 @@
   color: var(--color-text);
   letter-spacing: -0.2px;
   margin-bottom: var(--spacing-sm);
+  overflow-wrap: break-word;
 }
 
 .detail-meta {
@@ -276,6 +294,8 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  /* wraps gracefully on narrow panels */
 }
 
 /* ─── Note Card ─── */
@@ -290,6 +310,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+  min-width: 0;
+  /* prevents card from overflowing grid column */
+  box-sizing: border-box;
 }
 
 .note-card:hover {
@@ -312,6 +335,7 @@
   color: var(--color-text);
   letter-spacing: -0.1px;
   line-height: 1.4;
+  overflow-wrap: break-word;
 }
 
 .note-card-preview {
@@ -322,6 +346,7 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  overflow-wrap: break-word;
 }
 
 .note-card-footer {
@@ -329,11 +354,14 @@
   align-items: center;
   justify-content: space-between;
   margin-top: var(--spacing-xs);
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
 }
 
 .note-card-date {
   font-size: var(--text-xs);
   color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 .note-card-actions {
@@ -348,8 +376,9 @@
 }
 
 .note-card-action-btn {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  /* slightly larger for easier tapping */
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -382,12 +411,14 @@
   font-weight: 500;
   line-height: 1.5;
   width: fit-content;
+  white-space: nowrap;
 }
 
 /* ─── Navbar ─── */
 .navbar {
-  height: 52px;
-  min-height: 52px;
+  height: clamp(44px, 6vh, 52px);
+  /* scales slightly on very tall screens */
+  min-height: 44px;
   border-bottom: 0.5px solid var(--color-border);
   background: var(--color-surface);
   display: flex;
@@ -400,12 +431,14 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  min-width: 0;
 }
 
 .navbar-right {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
+  flex-shrink: 0;
 }
 
 .navbar-btn {
@@ -421,6 +454,8 @@
   border: none;
   background: none;
   color: var(--color-text-secondary);
+  white-space: nowrap;
+  min-height: 36px;
 }
 
 .navbar-btn:hover {
@@ -439,8 +474,8 @@
 }
 
 .theme-toggle {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -451,6 +486,7 @@
   cursor: pointer;
   font-size: var(--text-base);
   transition: border-color var(--transition-fast), color var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .theme-toggle:hover {
@@ -473,6 +509,9 @@
   transition: background-color var(--transition-fast), border-color var(--transition-fast);
   text-decoration: none;
   border: 0.5px solid transparent;
+  min-height: 40px;
+  /* consistent touch target */
+  white-space: nowrap;
 }
 
 .btn:disabled {
@@ -533,6 +572,9 @@
   border: 0.5px solid var(--color-border);
   border-radius: var(--radius-md);
   transition: border-color var(--transition-fast);
+  box-sizing: border-box;
+  min-height: 44px;
+  /* meets accessibility touch target recommendation */
 }
 
 .form-input:focus {
@@ -585,11 +627,13 @@
 .auth-layout {
   display: flex;
   height: 100vh;
+  height: 100dvh;
   width: 100%;
 }
 
 .auth-dark-panel {
-  width: 45%;
+  width: clamp(280px, 40%, 480px);
+  /* fluid: never too narrow or too wide */
   background: #0F0F0F;
   display: flex;
   flex-direction: column;
@@ -597,15 +641,19 @@
   justify-content: center;
   padding: var(--spacing-3xl);
   position: relative;
+  flex-shrink: 0;
 }
 
 .auth-form-panel {
-  width: 55%;
+  flex: 1;
+  /* takes all remaining width naturally */
+  min-width: 0;
   background: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-3xl);
+  padding: clamp(var(--spacing-xl), 5vw, var(--spacing-3xl));
+  overflow-y: auto;
 }
 
 [data-theme="dark"] .auth-form-panel {
@@ -618,7 +666,7 @@
 }
 
 .auth-heading {
-  font-size: var(--text-2xl);
+  font-size: clamp(var(--text-xl), 2.5vw, var(--text-2xl));
   font-weight: 500;
   letter-spacing: -0.3px;
   color: var(--color-text);
@@ -700,6 +748,8 @@
   align-items: center;
   justify-content: center;
   animation: fadeIn 0.15s ease;
+  padding: var(--spacing-md);
+  /* prevents dialog from touching screen edges */
 }
 
 .edit-dialog {
@@ -708,6 +758,9 @@
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 480px;
+  max-height: 90vh;
+  /* never taller than the viewport */
+  overflow-y: auto;
   margin: var(--spacing-lg);
 }
 
@@ -717,6 +770,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  z-index: 1;
 }
 
 .edit-dialog-body {
@@ -729,6 +786,11 @@
   display: flex;
   gap: var(--spacing-sm);
   justify-content: flex-end;
+  flex-wrap: wrap;
+  /* buttons wrap on very small dialogs */
+  position: sticky;
+  bottom: 0;
+  background: var(--color-surface);
 }
 
 /* ─── Dropdown ─── */
@@ -762,27 +824,158 @@
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background-color var(--transition-fast);
+  min-height: 36px;
+  /* touch-friendly dropdown items */
 }
 
 .dropdown-item:hover {
   background: var(--color-background);
 }
 
-/* ─── Mobile responsive ─── */
+/* ─── Notes Grid — fully fluid ─── */
+.notes-grid {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  display: grid;
+  /* auto-fill: fills as many columns as fit; minmax: never smaller than 220px,
+     never larger than equal share — adapts from 1 col on phones to 3+ on wide screens */
+  grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+  gap: 12px;
+  align-content: start;
+}
+
+/* Touch devices: always show card actions (no hover on touch) */
+@media (hover: none) and (pointer: coarse) {
+  .note-card-actions {
+    opacity: 1;
+  }
+}
+
+/* ── Floating Action Button (visible when sidebar is hidden) ── */
+.mobile-fab {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-primary-text);
+  border: none;
+  font-size: 28px;
+  font-weight: 300;
+  cursor: pointer;
+  z-index: 150;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-fab:hover {
+  transform: scale(1.08);
+  background: var(--color-primary-dark);
+}
+
+/* ── Mobile Detail Overlay (slide-up panel) ── */
+.detail-overlay {
+  display: none;
+}
+
+.detail-overlay.active {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  background: rgba(0, 0, 0, 0.35);
+  animation: fadeIn 0.15s ease;
+}
+
+.detail-overlay .detail-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 10vh;
+  width: 100%;
+  min-width: unset;
+  border-left: none;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  animation: slideUp 0.25s ease;
+  z-index: 181;
+}
+
+.detail-close-btn {
+  display: none;
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+  color: var(--color-text-secondary);
+  border: 0.5px solid var(--color-border);
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 5;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ─── Breakpoint: ≤1280px — compress panels before hiding ─────────────────── */
+@media (max-width: 1280px) {
+  .sidebar {
+    width: clamp(160px, 16vw, 200px);
+    min-width: 160px;
+  }
+
+  .detail-panel {
+    width: clamp(260px, 26vw, 320px);
+    min-width: 260px;
+  }
+}
+
+/* ─── Breakpoint: ≤1024px — hide sidebar & detail ─────────────────────────── */
 @media (max-width: 1024px) {
   .sidebar {
     display: none;
   }
 
-  .detail-panel {
+  /* Hide the inline detail panel — it becomes an overlay instead */
+  .app-layout>.detail-panel {
     display: none;
   }
 
+  /* Show FAB */
+  .mobile-fab {
+    display: flex;
+  }
+
+  /* Show mobile detail overlay close button */
+  .detail-close-btn {
+    display: flex;
+  }
+
+  /* Give notes grid more room */
   .notes-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
   }
 }
 
+/* ─── Breakpoint: ≤768px — auth + navbar ───────────────────────────────────── */
 @media (max-width: 768px) {
   .auth-layout {
     flex-direction: column;
@@ -800,7 +993,80 @@
   }
 
   .navbar {
-    padding: 0 var(--spacing-lg);
+    padding: 0 var(--spacing-md);
+    height: 48px;
+    min-height: 48px;
+  }
+
+  .navbar-btn {
+    padding: 5px 8px;
+    font-size: var(--text-sm);
+  }
+
+  .notes-panel-header {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+
+  .notes-grid {
+    padding: var(--spacing-md) var(--spacing-lg);
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  }
+
+  .edit-dialog {
+    margin: var(--spacing-sm);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+/* ─── Breakpoint: ≤480px — small phones ────────────────────────────────────── */
+@media (max-width: 480px) {
+  .auth-dark-panel {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+
+  .auth-form-panel {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+
+  .auth-heading {
+    font-size: var(--text-xl);
+  }
+
+  .navbar-left span {
+    display: none;
+  }
+
+  .notes-grid {
+    padding: var(--spacing-sm) var(--spacing-md);
+    gap: 8px;
+    /* single column on very small phones */
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-fab {
+    bottom: 16px;
+    right: 16px;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+
+  .detail-overlay .detail-panel {
+    top: 5vh;
+  }
+
+  .edit-overlay {
+    padding: var(--spacing-sm);
+    align-items: flex-end;
+    /* sheet slides up from bottom on small phones */
+  }
+
+  .edit-dialog {
+    margin: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    max-height: 95vh;
   }
 }
 

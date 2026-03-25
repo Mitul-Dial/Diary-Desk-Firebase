@@ -1,5 +1,7 @@
-/* CSS Reset and Global Styles */
-* {
+/* ─── CSS Reset and Global Styles ─── */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -24,7 +26,7 @@
   /* Sidebar */
   --color-sidebar: #F5F5F5;
 
-  /* Status colors (muted for alerts) */
+  /* Status colors */
   --color-success: #16A34A;
   --color-warning: #D97706;
   --color-error: #E11D48;
@@ -51,7 +53,7 @@
   --tag-health-text: #9F1239;
   --tag-health-dot: #E11D48;
 
-  /* Default tag (General / unknown) */
+  /* Default tag */
   --tag-default-bg: #F3F4F6;
   --tag-default-text: #4B5563;
   --tag-default-dot: #6B7280;
@@ -60,22 +62,31 @@
   --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
   --font-serif: 'Lora', Georgia, serif;
 
-  --text-xs: 0.6875rem;   /* 11px */
-  --text-sm: 0.75rem;     /* 12px */
-  --text-base: 0.875rem;  /* 14px */
-  --text-md: 0.9375rem;   /* 15px */
-  --text-lg: 1.0625rem;   /* 17px */
-  --text-xl: 1.25rem;     /* 20px */
-  --text-2xl: 1.5rem;     /* 24px */
+  /* Fluid type scale — clamp(min, preferred, max)
+     Scales smoothly between 360px and 1440px viewports */
+  --text-xs: clamp(0.625rem, 0.6rem + 0.1vw, 0.6875rem);
+  /* 10–11px */
+  --text-sm: clamp(0.6875rem, 0.65rem + 0.2vw, 0.75rem);
+  /* 11–12px */
+  --text-base: clamp(0.8125rem, 0.76rem + 0.25vw, 0.875rem);
+  /* 13–14px */
+  --text-md: clamp(0.875rem, 0.82rem + 0.27vw, 0.9375rem);
+  /* 14–15px */
+  --text-lg: clamp(1rem, 0.94rem + 0.3vw, 1.0625rem);
+  /* 16–17px */
+  --text-xl: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
+  /* 18–20px */
+  --text-2xl: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem);
+  /* 20–24px */
 
-  /* Spacing */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 12px;
-  --spacing-lg: 16px;
-  --spacing-xl: 24px;
-  --spacing-2xl: 32px;
-  --spacing-3xl: 48px;
+  /* Fluid spacing — scales gently with viewport */
+  --spacing-xs: clamp(3px, 0.2vw + 2px, 4px);
+  --spacing-sm: clamp(6px, 0.4vw + 4px, 8px);
+  --spacing-md: clamp(10px, 0.6vw + 6px, 12px);
+  --spacing-lg: clamp(12px, 0.8vw + 8px, 16px);
+  --spacing-xl: clamp(18px, 1.2vw + 10px, 24px);
+  --spacing-2xl: clamp(24px, 1.8vw + 14px, 32px);
+  --spacing-3xl: clamp(32px, 2.5vw + 20px, 48px);
 
   /* Border radius */
   --radius-sm: 6px;
@@ -87,7 +98,7 @@
   --transition-normal: 200ms ease;
 }
 
-/* Dark theme */
+/* ─── Dark theme ─── */
 [data-theme="dark"] {
   --color-background: #0F0F0F;
   --color-surface: #1A1A1A;
@@ -100,10 +111,9 @@
   --color-primary-dark: #D0D0D0;
   --color-primary-light: #1A1A1A;
   --color-primary-text: #0F0F0F;
-
-  /* Tag accents stay vivid in dark mode */
 }
 
+/* Kept for any JS-toggled className approach */
 .dark-mode {
   --color-background: #0F0F0F;
   --color-surface: #1A1A1A;
@@ -118,13 +128,20 @@
   --color-primary-text: #0F0F0F;
 }
 
-/* Base */
-html, body, #root {
+/* ─── Base ─── */
+html {
   height: 100%;
+  /* Prevent layout shift when scrollbar appears/disappears */
+  scrollbar-gutter: stable;
+  /* Smooth font scaling on all browsers */
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  margin: 0;
+  min-height: 100%;
+  min-height: 100dvh;
+  /* dynamic viewport — fixes iOS browser chrome jump */
   font-family: var(--font-primary);
   font-size: var(--text-base);
   font-weight: 400;
@@ -134,9 +151,29 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color var(--transition-normal), color var(--transition-normal);
+  /* Prevent horizontal overflow on any screen */
+  overflow-x: hidden;
 }
 
-/* Global resets */
+#root {
+  height: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Sidebar visibility fix ─────────────────────────────────────────────────
+   The sidebar uses `display: flex` set in App.css.
+   This rule ensures it is never accidentally hidden at large viewport widths
+   by a stale media query or a class toggle.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (min-width: 1025px) {
+  .sidebar {
+    display: flex !important;
+  }
+}
+
+/* ─── Global resets ─── */
 button {
   font-family: inherit;
   font-size: inherit;
@@ -144,33 +181,51 @@ button {
   background: none;
   cursor: pointer;
   padding: 0;
+  /* Prevent tap highlight flash on mobile */
+  -webkit-tap-highlight-color: transparent;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: inherit;
   font-size: inherit;
   border: none;
   background: none;
   outline: none;
+  /* Prevent iOS from zooming into inputs smaller than 16px */
+  font-size: max(var(--text-base), 16px);
+}
+
+/* Restore intended text size for non-input elements after the above rule */
+:not(input):not(textarea):not(select) {
+  font-size: var(--text-base);
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
-img {
+img,
+svg {
   max-width: 100%;
   height: auto;
+  display: block;
+  /* removes inline gap under images */
 }
 
-/* Scrollbar */
+/* ─── Scrollbar ─── */
 ::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
+  /* horizontal scrollbars too */
 }
 
 ::-webkit-scrollbar-track {
@@ -186,35 +241,72 @@ img {
   background: var(--color-text-muted);
 }
 
-/* Focus */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+/* ─── Focus ─── */
 *:focus-visible {
   outline: 1.5px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
 
-/* Selection */
+/* Remove focus ring for mouse users — only show for keyboard */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ─── Selection ─── */
 ::selection {
   background-color: var(--tag-work-bg);
   color: var(--tag-work-text);
 }
 
-/* Animations — minimal, no bouncy transforms */
+/* ─── Animations ─── */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateX(-8px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-/* Spinner */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
+/* ─── Spinner ─── */
 .spinner-border {
   display: inline-block;
   width: 14px;
@@ -223,4 +315,17 @@ img {
   border-right-color: transparent;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ─── Reduced motion — respects system preference ─── */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

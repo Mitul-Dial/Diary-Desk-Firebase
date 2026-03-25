@@ -1,4 +1,3 @@
-
 .navbar {
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
@@ -13,20 +12,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  height: clamp(52px, 7vh, 64px); /* fluid height — not too short on phones, not too tall on big screens */
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 clamp(0.75rem, 2.5vw, 1rem); /* fluid horizontal padding */
 }
+
 .navbar-brand {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  font-size: var(--text-xl);
+  font-size: clamp(var(--text-lg), 2vw, var(--text-xl)); /* scales with viewport */
   font-weight: 600;
   color: var(--color-primary);
   text-decoration: none;
   transition: color var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .navbar-brand:hover {
@@ -41,12 +43,14 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-lg);
+  min-width: 0;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
+  flex-wrap: nowrap; /* keep nav links on one line until breakpoint */
 }
 
 .nav-link {
@@ -59,6 +63,8 @@
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
   font-weight: 400;
+  white-space: nowrap;
+  min-height: 40px; /* accessible touch target */
 }
 
 .nav-link:hover {
@@ -77,12 +83,14 @@
 
 .nav-link i {
   margin-right: var(--spacing-xs);
+  flex-shrink: 0;
 }
 
 .auth-buttons {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
+  flex-shrink: 0;
 }
 
 .auth-button-group {
@@ -102,10 +110,13 @@
   border: none;
   font-size: var(--text-base);
   font-family: inherit;
+  white-space: nowrap;
+  min-height: 40px; /* touch-friendly */
 }
 
 .btn i {
   margin-right: var(--spacing-xs);
+  flex-shrink: 0;
 }
 
 .btn-primary {
@@ -146,6 +157,8 @@
   transition: all var(--transition-fast);
   font-family: inherit;
   font-size: var(--text-base);
+  white-space: nowrap;
+  min-height: 40px;
 }
 
 .dropdown-toggle:hover {
@@ -172,6 +185,8 @@
   z-index: 1000;
   overflow: hidden;
   animation: fadeIn 0.15s ease-out;
+  /* prevent dropdown from going off-screen on narrow viewports */
+  max-width: calc(100vw - 2rem);
 }
 
 .dropdown-item {
@@ -189,6 +204,7 @@
   font-family: inherit;
   transition: background-color var(--transition-fast);
   text-align: left;
+  min-height: 40px; /* touch-friendly dropdown items */
 }
 
 .dropdown-item:hover {
@@ -207,6 +223,7 @@
 
 .dropdown-item i {
   margin-right: var(--spacing-xs);
+  flex-shrink: 0;
 }
 
 .dropdown-divider {
@@ -228,6 +245,7 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   font-size: var(--text-base);
+  flex-shrink: 0;
 }
 
 .mobile-menu-btn:hover {
@@ -248,7 +266,7 @@
   gap: var(--spacing-sm);
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 clamp(0.75rem, 2.5vw, 1rem);
 }
 
 .mobile-nav-link {
@@ -267,6 +285,7 @@
   text-align: left;
   width: 100%;
   transition: all var(--transition-fast);
+  min-height: 44px; /* larger tap target on mobile */
 }
 
 .mobile-nav-link:hover {
@@ -291,6 +310,7 @@
 
 .mobile-nav-link i {
   margin-right: var(--spacing-xs);
+  flex-shrink: 0;
 }
 
 .mobile-auth-section {
@@ -309,6 +329,15 @@
 .mobile-btn {
   justify-content: center;
 }
+
+/* ─── Breakpoint: ≤1024px — start compressing before going mobile ────────── */
+@media (max-width: 1024px) {
+  .nav-link {
+    padding: var(--spacing-sm) var(--spacing-sm); /* tighter on mid-range tablets */
+  }
+}
+
+/* ─── Breakpoint: ≤768px — switch to hamburger nav ──────────────────────── */
 @media (max-width: 768px) {
   .desktop-nav {
     display: none !important;
@@ -323,6 +352,18 @@
   }
 }
 
+/* ─── Breakpoint: ≤480px — small phones ─────────────────────────────────── */
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0 var(--spacing-md);
+  }
+
+  .navbar-brand {
+    font-size: var(--text-lg);
+  }
+}
+
+/* ─── Animations ─── */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -345,6 +386,7 @@
   }
 }
 
+/* ─── Focus / Accessibility ─── */
 .nav-link:focus,
 .btn:focus,
 .dropdown-toggle:focus,
