@@ -850,6 +850,59 @@
   }
 }
 
+/* ── Sidebar Toggle Button (hamburger — hidden on desktop) ── */
+.sidebar-toggle-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text);
+  border: 0.5px solid var(--color-border);
+  cursor: pointer;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast);
+}
+
+.sidebar-toggle-btn:hover {
+  background: var(--color-background);
+}
+
+/* ── Sidebar Overlay (mobile slide-in) ── */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  background: rgba(0, 0, 0, 0.35);
+  animation: fadeIn 0.15s ease;
+}
+
+.sidebar-overlay .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: clamp(240px, 70vw, 300px);
+  z-index: 191;
+  animation: sidebarSlideIn 0.25s ease;
+  display: flex !important;
+}
+
+@keyframes sidebarSlideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 /* ── Floating Action Button (visible when sidebar is hidden) ── */
 .mobile-fab {
   display: none;
@@ -906,12 +959,12 @@
 }
 
 .detail-close-btn {
-  display: none;
-  position: absolute;
-  top: var(--spacing-lg);
+  position: fixed;
+  top: calc(10vh + var(--spacing-lg));
   right: var(--spacing-lg);
   width: 32px;
   height: 32px;
+  display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-sm);
@@ -920,7 +973,7 @@
   border: 0.5px solid var(--color-border);
   cursor: pointer;
   font-size: 16px;
-  z-index: 5;
+  z-index: 200;
 }
 
 @keyframes slideUp {
@@ -948,9 +1001,11 @@
   }
 }
 
-/* ─── Breakpoint: ≤1024px — hide sidebar & detail ─────────────────────────── */
+/* ─── Breakpoint: ≤1024px — hide sidebar & detail, show hamburger ──────── */
 @media (max-width: 1024px) {
-  .sidebar {
+
+  /* Hide inline sidebar — it shows via the overlay instead */
+  .app-layout>.sidebar {
     display: none;
   }
 
@@ -959,13 +1014,13 @@
     display: none;
   }
 
-  /* Show FAB */
-  .mobile-fab {
+  /* Show hamburger button */
+  .sidebar-toggle-btn {
     display: flex;
   }
 
-  /* Show mobile detail overlay close button */
-  .detail-close-btn {
+  /* Show FAB */
+  .mobile-fab {
     display: flex;
   }
 

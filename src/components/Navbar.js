@@ -4,7 +4,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import DarkModeToggle from "./DarkModeToggle";
 
-const Navbar = ({ refreshAuthState, onNewNote }) => {
+const Navbar = ({ refreshAuthState, onNewNote, onToggleSidebar, isSidebarOpen }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isLoggedIn = !!auth.currentUser;
@@ -22,6 +22,16 @@ const Navbar = ({ refreshAuthState, onNewNote }) => {
   return (
     <nav className="navbar">
       <div className="navbar-left">
+        {/* Hamburger — visible ≤1024px */}
+        {onToggleSidebar && (
+          <button
+            className="sidebar-toggle-btn"
+            onClick={onToggleSidebar}
+            aria-label={isSidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+          >
+            {isSidebarOpen ? '✕' : '☰'}
+          </button>
+        )}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <img src="/favicon-32x32.png" alt="Diary Desk" style={{ width: 22, height: 22, borderRadius: 4 }} />
           <span style={{

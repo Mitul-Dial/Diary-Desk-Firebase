@@ -16,7 +16,7 @@ export const getTagColors = (tag) => {
     return TAG_COLORS[key] || DEFAULT_TAG;
 };
 
-const Sidebar = ({ notes, selectedTag, onTagSelect, onNewNote, activeView, onViewChange }) => {
+const Sidebar = ({ notes, selectedTag, onTagSelect, onNewNote, activeView, onViewChange, onClose }) => {
     const notesArray = Array.isArray(notes) ? notes : [];
 
     // Collect tags with counts
@@ -26,6 +26,11 @@ const Sidebar = ({ notes, selectedTag, onTagSelect, onNewNote, activeView, onVie
         tagCounts[tag] = (tagCounts[tag] || 0) + 1;
     });
     const tags = Object.entries(tagCounts).sort((a, b) => a[0].localeCompare(b[0]));
+
+    const handleNavClick = (cb) => {
+        cb();
+        if (onClose) onClose();
+    };
 
     return (
         <aside className="sidebar">
@@ -38,7 +43,7 @@ const Sidebar = ({ notes, selectedTag, onTagSelect, onNewNote, activeView, onVie
                 {/* Navigation */}
                 <button
                     className={`sidebar-item ${activeView === 'all' && !selectedTag ? 'active' : ''}`}
-                    onClick={() => { onViewChange('all'); onTagSelect(''); }}
+                    onClick={() => handleNavClick(() => { onViewChange('all'); onTagSelect(''); })}
                 >
                     <span className="sidebar-item-icon">📝</span>
                     <span>All Notes</span>
@@ -53,7 +58,7 @@ const Sidebar = ({ notes, selectedTag, onTagSelect, onNewNote, activeView, onVie
                         <button
                             key={tag}
                             className={`sidebar-item ${selectedTag === tag ? 'active' : ''}`}
-                            onClick={() => onTagSelect(selectedTag === tag ? '' : tag)}
+                            onClick={() => handleNavClick(() => onTagSelect(selectedTag === tag ? '' : tag))}
                         >
                             <span
                                 className="sidebar-tag-dot"
@@ -67,7 +72,7 @@ const Sidebar = ({ notes, selectedTag, onTagSelect, onNewNote, activeView, onVie
             </nav>
 
             <div className="sidebar-footer">
-                <button className="sidebar-new-btn" onClick={onNewNote}>
+                <button className="sidebar-new-btn" onClick={() => handleNavClick(onNewNote)}>
                     ＋ New Note
                 </button>
             </div>

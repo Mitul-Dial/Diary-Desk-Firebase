@@ -7,7 +7,7 @@ import NoteState from "./context/notes/NoteState";
 import Alert from "./components/Alert";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 
@@ -16,6 +16,17 @@ function App() {
   const [authKey, setAuthKey] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const mobileBreakpoint = useRef(1024);
+
+  // Auto-close sidebar when resizing above breakpoint
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > mobileBreakpoint.current) setSidebarOpen(false);
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   const showAlert = (message, type) => {
     setAlert({ msg: message, type: type });
@@ -76,8 +87,8 @@ function App() {
               path="/"
               element={
                 <>
-                  <Navbar refreshAuthState={refreshAuthState} />
-                  <Home showAlert={showAlert} key={authKey} />
+                  <Navbar refreshAuthState={refreshAuthState} onToggleSidebar={() => setSidebarOpen(s => !s)} isSidebarOpen={sidebarOpen} />
+                  <Home showAlert={showAlert} key={authKey} sidebarOpen={sidebarOpen} onCloseSidebar={() => setSidebarOpen(false)} />
                 </>
               }
             />
@@ -85,7 +96,7 @@ function App() {
               path="/about"
               element={
                 <>
-                  <Navbar refreshAuthState={refreshAuthState} />
+                  <Navbar refreshAuthState={refreshAuthState} onToggleSidebar={() => setSidebarOpen(s => !s)} isSidebarOpen={sidebarOpen} />
                   <About />
                 </>
               }
@@ -95,8 +106,8 @@ function App() {
               element={
                 isAuthenticated ? (
                   <>
-                    <Navbar refreshAuthState={refreshAuthState} />
-                    <Home showAlert={showAlert} key={authKey} />
+                    <Navbar refreshAuthState={refreshAuthState} onToggleSidebar={() => setSidebarOpen(s => !s)} isSidebarOpen={sidebarOpen} />
+                    <Home showAlert={showAlert} key={authKey} sidebarOpen={sidebarOpen} onCloseSidebar={() => setSidebarOpen(false)} />
                   </>
                 ) : (
                   <Login showAlert={showAlert} refreshAuthState={refreshAuthState} />
