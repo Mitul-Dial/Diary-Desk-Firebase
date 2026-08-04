@@ -150,5 +150,5 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 ---
 
 <div align="center">
-  <sub>Made with ❤️ by <b>Mitul Dial</b></sub>
+  <sub>Made by <b>Mitul Dial</b></sub>
 </div>
