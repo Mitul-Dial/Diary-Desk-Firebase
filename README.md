@@ -1,154 +1,134 @@
-<div align="center">
-<h1><b>Diary Desk<b></h1>
-   <h2><b>https://diary-desk.web.app<b></h2>
-</div>
-   
+# Diary Desk
+
 A minimal, personal note-taking web application inspired by the simplicity of Notion — built with React and Firebase.
 
+## Overview
 
+**Diary Desk** is a full-stack note-taking web application that allows users to create, organize, search, and manage personal notes in a clean, distraction-free interface. It features real-time cloud storage via Firebase Firestore, secure user authentication (Email/Password and Google OAuth), a tag-based organization system, and a system-aware dark mode — all wrapped in a Notion-inspired minimal UI.
 
----
+This project demonstrates proficiency in modern front-end development, cloud-based backend integration, state management patterns, and responsive UI/UX design.
 
-## 🧭 Overview
+## Live Demo
 
-**Diary Desk** is a full-stack note-taking web application that allows users to create, organize, search, and manage personal notes in a clean, distraction-free interface. It features real-time cloud storage via Firebase Firestore, secure user authentication (Email/Password + Google OAuth), a tag-based organization system, and a beautiful dark mode — all wrapped in a Notion-inspired minimal UI.
+[Open Diary Desk](https://diary-desk.web.app)
 
-This project was built to demonstrate proficiency in modern front-end development, cloud-based backend integration, state management patterns, and responsive UI/UX design.
+## Features
 
----
+- **Authentication System**: Full user authentication powered by Firebase Auth. Includes Email and Password signup (with real-time password strength indicator and live match validation) and Google OAuth one-click sign-in.
+- **Full CRUD Operations**: Complete Create, Read, Update, and Delete functionality for notes, all persisted in Cloud Firestore with strict per-user data isolation.
+- **Tag-Based Organization**: Intuitive categorization using color-coded tags, a dedicated sidebar for quick navigation, and tag pills on each note.
+- **Smart Search & Filtering**: Find any note instantly with multi-field search (title, description, tag) combined with live results counters.
+- **Dark Mode**: System-aware theme toggle that automatically detects OS-level preference and persists user selection via localStorage.
+- **Responsive Three-Panel Layout**: A productivity-focused layout featuring a collapsible sidebar, a scrollable notes grid, and a full-featured reading pane, adapting gracefully to mobile viewports.
+- **Minimal UI**: A premium, custom design system utilizing CSS variables for cohesive styling, overlay modals, and smooth interactions without reliance on CSS frameworks.
 
-## ✨ Features In-Depth
+## Tech Stack
 
-### 🔐 Authentication System
-Full user authentication powered by **Firebase Auth** with two sign-in methods:
-- **Email & Password**: Users can register with their email and a password. The signup form includes a **real-time password strength indicator** (weak → strong, visualized with a 4-segment color bar) and **live password-match validation** with visual feedback (✓ green / ✕ red).
-- **Google OAuth Sign-In**: One-click sign-in via Google popup. On first sign-in, a user profile document is automatically created in Firestore using `setDoc` with `serverTimestamp`.
-- **Error Handling**: Specific, user-friendly error messages for common scenarios — invalid credentials, email already in use, too many attempts, weak password, and popup closed by user.
-- **Auth State Persistence**: Uses Firebase's `onAuthStateChanged` listener to maintain session state across page refreshes and detect login/logout events in real time.
+| Technology | Purpose |
+| ---------- | ------- |
+| React | Frontend UI Library |
+| React Router | Client-Side Routing |
+| Firebase Auth | Authentication Services |
+| Firebase Firestore | NoSQL Cloud Database |
+| Firebase Hosting | Web Application Deployment |
+| Vanilla CSS | Custom Styling & Theming |
 
-### 📝 Full CRUD Operations
-Complete Create, Read, Update, and Delete functionality for notes, all persisted in **Cloud Firestore**:
-- **Create**: Notes are saved with a title, description, tag, user ID, and server-generated timestamps. New notes are immediately added to the local state for an optimistic, instant-feeling UI.
-- **Read**: Notes are fetched using a Firestore `query` filtered by the authenticated user's UID (`where("userId", "==", uid)`), ensuring strict **per-user data isolation**. Notes are sorted client-side by date (newest first).
-- **Update**: Notes can be edited via an overlay modal dialog. The `updatedAt` timestamp is refreshed on each edit using `serverTimestamp`.
-- **Delete**: Notes are removed from both Firestore and local state with a confirmation prompt to prevent accidental loss.
+## Architecture
 
-### 🏷️ Tag-Based Organization
-An intuitive tagging system to categorize and filter notes:
-- **Color-Coded Tags**: Built-in color palettes for common tags (Personal → purple, Work → blue, Ideas → green, Journal → amber, Health → rose). Unknown tags gracefully fallback to a neutral gray.
-- **Sidebar Navigation**: A dedicated sidebar dynamically lists all tags with their note counts. Clicking a tag instantly filters the notes panel.
-- **Tag Pills**: Each note card displays its tag as a styled pill with a colored dot indicator, ensuring quick visual identification.
+The application follows a client-serverless architecture utilizing Firebase for backend services:
+- **Client**: A React Single Page Application (SPA) handling the user interface, routing, and global state management via the Context API.
+- **Authentication**: Firebase Auth manages secure user sessions, credential validation, and OAuth flows.
+- **Database**: Cloud Firestore acts as the real-time document database, securely storing user profiles and note data with explicit security rules based on authenticated UIDs.
+- **Hosting**: The production build is deployed and served securely via Firebase Hosting.
 
-### 🔍 Smart Search & Filtering
-Find any note instantly:
-- **Multi-Field Search**: The search bar filters notes by matching against the title, description content, and tag simultaneously.
-- **Combined Filtering**: Search and tag filters work together — apply a tag filter from the sidebar and then narrow results with a text search.
-- **Live Results Count**: A real-time counter shows how many notes match the current filters (e.g., "5 notes · Work").
+## Project Structure
 
-### 🌙 Dark Mode
-A system-aware theme toggle for comfortable viewing in any lighting:
-- **Automatic Detection**: On first visit, the app respects the user's OS-level preference via `window.matchMedia('(prefers-color-scheme: dark)')`.
-- **Manual Toggle**: Users can switch themes via a sun/moon icon button in the navbar. Custom SVG icons — no external icon library required.
-- **Persistence**: The user's theme preference is saved to `localStorage` and restored on every visit.
-- **CSS Custom Properties**: The entire theme is driven by CSS variables (`--color-background`, `--color-text`, `--color-surface`, etc.), enabling a seamless and flicker-free transition with the `data-theme` attribute on `<html>`.
+```text
+Diary-Desk-Firebase/
+├── public/
+├── src/
+│   ├── components/
+│   ├── context/
+│   ├── App.css
+│   ├── App.js
+│   ├── firebase.js
+│   ├── index.css
+│   └── index.js
+├── .env.example
+├── firebase.json
+├── package.json
+└── README.md
+```
 
-### 📱 Responsive Three-Panel Layout
-A productivity-focused layout inspired by professional note-taking apps:
-- **Panel 1 — Sidebar**: Collapsible tag navigation and quick actions.
-- **Panel 2 — Notes Grid**: A scrollable grid of note cards with search and filtering.
-- **Panel 3 — Detail View**: A reading pane that displays the full content of the selected note.
-- Fully responsive — adapts gracefully from desktop to mobile viewports using CSS custom properties and flexible layouts.
-
-### 🎨 Notion-Inspired Minimal UI
-A premium, distraction-free interface:
-- **Split-Screen Auth Pages**: Login and signup feature a dark-panel + form-panel layout with the app logo, tagline, and decorative elements.
-- **Custom Design System**: All styling uses a hand-crafted CSS design system with custom properties for spacing (`--spacing-*`), typography (`--text-*`), radii (`--radius-*`), and colors — no CSS frameworks.
-- **Smooth Interactions**: Hover effects, transitions, loading spinners, and focus states for a polished user experience.
-- **Overlay Modals**: Note creation and editing use overlay dialogs with form validation (minimum 5 characters for title and content).
-
----
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- **Node.js** v16.x or higher
-- **npm** or **yarn**
-- A **Firebase project** with Authentication and Firestore enabled
+- Node.js v16.x or higher
+- npm or yarn
+- A Firebase project with Authentication and Firestore enabled
 
-### Installation
+### Clone
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/your-username/Diary-Desk-Firebase.git
-   cd Diary-Desk-Firebase
-   ```
+```bash
+git clone https://github.com/Mitul-Dial/Diary-Desk-Firebase.git
+cd Diary-Desk-Firebase
+```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+### Install dependencies
 
-3. **Set up environment variables**
-   Copy the example file and fill in your Firebase credentials:
-   ```bash
-   cp .env.example .env
-   ```
+```bash
+npm install
+```
 
-4. **Start the development server**
-   ```bash
-   npm start
-   ```
-   The app will open at `http://localhost:3000`.
-
----
-
-## 🔑 Environment Variables
+### Configuration
 
 Create a `.env` file in the project root with the following variables (see `.env.example`):
 
-| Variable | Description |
-|---|---|
-| `REACT_APP_FIREBASE_API_KEY` | Your Firebase project API key |
-| `REACT_APP_FIREBASE_AUTH_DOMAIN` | Auth domain (e.g., `your-app.firebaseapp.com`) |
-| `REACT_APP_FIREBASE_PROJECT_ID` | Firebase project ID |
-| `REACT_APP_FIREBASE_STORAGE_BUCKET` | Storage bucket URL |
-| `REACT_APP_FIREBASE_MESSAGING_SENDER_ID` | Cloud Messaging sender ID |
-| `REACT_APP_FIREBASE_APP_ID` | Firebase app ID |
-| `REACT_APP_FIREBASE_MEASUREMENT_ID` | Google Analytics measurement ID |
+```env
+REACT_APP_FIREBASE_API_KEY=your_api_key
+REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
+REACT_APP_FIREBASE_PROJECT_ID=your_project_id
+REACT_APP_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+REACT_APP_FIREBASE_APP_ID=your_app_id
+REACT_APP_FIREBASE_MEASUREMENT_ID=your_measurement_id
+```
 
-> **Note:** All variables must be prefixed with `REACT_APP_` to be accessible in the React app at build time. This is a Create React App convention.
+Note: All variables must be prefixed with `REACT_APP_` to be accessible in the React application at build time.
 
----
+### Run locally
 
-## 📸 Screenshots
+```bash
+npm start
+```
+The application will start and open at `http://localhost:3000`.
 
-<img width="1919" height="879" alt="Screenshot 2026-03-24 195243" src="https://github.com/user-attachments/assets/6d6ce119-729e-47ef-930b-ce93a7af38ba" />
-<img width="1919" height="882" alt="Screenshot 2026-03-24 195658" src="https://github.com/user-attachments/assets/77751623-d39a-4257-a965-0260c0a1a823" />
-<img width="1919" height="887" alt="Screenshot 2026-03-24 195706" src="https://github.com/user-attachments/assets/ea28e218-dacc-47f5-aa1e-9a15ac7d0260" />
+## Firebase Setup
 
+Diary Desk utilizes the following Firebase services:
+- **Authentication**: Ensure both Email/Password and Google Sign-In providers are enabled in the Firebase Console.
+- **Firestore Database**: Create a Firestore database and deploy appropriate security rules to ensure per-user data isolation.
+- **Hosting**: Used for deploying the production application.
 
----
+## Screenshots
 
-## 🧠 What I Learned
+### Dashboard
 
-Building Diary Desk strengthened my skills across the full stack:
+<img width="1919" height="879" alt="Diary Desk Dashboard" src="https://github.com/user-attachments/assets/6d6ce119-729e-47ef-930b-ce93a7af38ba" />
 
-- **React Hooks & Patterns**: Leveraged `useState`, `useEffect`, `useContext`, `useCallback`, and `useNavigate` for clean, functional component architecture.
-- **Firebase Integration**: Worked with Firebase Auth (email + OAuth), Firestore queries with `where` clauses, `serverTimestamp`, and real-time auth state listeners.
-- **State Management**: Implemented a custom Context API provider (`NoteState`) to manage global state — a practical alternative to Redux for medium-scale apps.
-- **Security Best Practices**: Moved API keys to environment variables, added comprehensive `.gitignore` patterns, and implemented per-user data isolation in Firestore.
-- **UI/UX Design**: Created a design system from scratch using CSS custom properties, delivering a cohesive, theme-able, and responsive interface without any CSS framework.
-- **Error Handling**: Built robust error handling for async Firebase operations with user-friendly feedback messages.
+### Notes View
 
----
+<img width="1919" height="882" alt="Diary Desk Notes" src="https://github.com/user-attachments/assets/77751623-d39a-4257-a965-0260c0a1a823" />
 
-## 📄 License
+### Note Editor
+
+<img width="1919" height="887" alt="Diary Desk Editor" src="https://github.com/user-attachments/assets/ea28e218-dacc-47f5-aa1e-9a15ac7d0260" />
+
+## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
----
+## Author
 
-<div align="center">
-  <sub>Made by <b>Mitul Dial</b></sub>
-</div>
+Made by Mitul Dial
