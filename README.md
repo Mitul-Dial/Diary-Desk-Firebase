@@ -1,10 +1,10 @@
 # Diary Desk
 
-A minimal, personal note-taking web application inspired by the simplicity of Notion — built with React and Firebase.
+A minimal, personal note-taking web application inspired by the simplicity of Notion built with React and Firebase.
 
 ## Overview
 
-**Diary Desk** is a full-stack note-taking web application that allows users to create, organize, search, and manage personal notes in a clean, distraction-free interface. It features real-time cloud storage via Firebase Firestore, secure user authentication (Email/Password and Google OAuth), a tag-based organization system, and a system-aware dark mode — all wrapped in a Notion-inspired minimal UI.
+**Diary Desk** is a full-stack note-taking web application that allows users to create, organize, search, and manage personal notes in a clean, distraction-free interface. It features real-time cloud storage via Firebase Firestore, secure user authentication (Email/Password and Google OAuth), a tag-based organization system, and a system-aware dark mode all wrapped in a Notion-inspired minimal UI.
 
 This project demonstrates proficiency in modern front-end development, cloud-based backend integration, state management patterns, and responsive UI/UX design.
 
@@ -127,7 +127,7 @@ Diary Desk utilizes the following Firebase services:
 
 ## License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License see the [LICENSE](LICENSE) file for details.
 
 ## Author
 
